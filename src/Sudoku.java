@@ -2,29 +2,6 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Sudoku {
-    private static void printField(int[][] field) {
-        System.out.println("-------------------------------");
-        int rowCount = 1;
-        for (int[] row : field) {
-            System.out.print('|');
-            int columnCount = 1;
-            for (int val : row) {
-                String c = "*";
-                if (val != 0) {
-                    c = Integer.toString(val);
-                }
-                System.out.print(' ' + c + ' ');
-                if (columnCount++ % 3 == 0) {
-                    System.out.print('|');
-                }
-            }
-            System.out.println();
-            if (rowCount++ % 3 == 0) {
-                System.out.println("-------------------------------");
-            }
-        }
-    }
-
     private static void play(int[][] fieldParam) {
         Scanner scanner = new Scanner(System.in);
         Helper helper = new Helper();
@@ -35,7 +12,7 @@ public class Sudoku {
         int[][] field = helper.fieldCopy(startField);
         boolean cont = true;
         while (cont) {
-            printField(field);
+            helper.printField(field);
             System.out.print("Input: ");
             String input = scanner.nextLine();
             if (input.equals("")) {
@@ -49,6 +26,11 @@ public class Sudoku {
                 case "reset":
                     field = helper.fieldCopy(startField);
                     break;
+                case "solve":
+                    cont = false;
+                    long startTime = System.currentTimeMillis();
+                    field = solver.solve(field);
+                    System.out.println("Solving took " + (System.currentTimeMillis() - startTime) + "ms");
                 case "check":
                     ArrayList<int[]> errors = checker.checkField(field);
                     if (errors.size() != 0) {
@@ -61,9 +43,9 @@ public class Sudoku {
                     } else {
                         System.out.println("No errors found!");
                     }
-                    break;
-                case "solve":
-                    //TODO
+                    if (!cont) {
+                        helper.printField(field);
+                    }
                     break;
                 case "show":
                     field = helper.fieldCopy(fieldParam);

@@ -11,7 +11,7 @@ public class Checker {
             for (int j = 0; j < 3; j++) {
                 int nx = x / 3 * 3 + i;
                 int ny = y / 3 * 3 + j;
-                available.remove(new Integer(field[ny][nx]));
+                available.remove(Integer.valueOf(field[ny][nx]));
             }
         }
         return new HashSet<>(available);
@@ -23,7 +23,7 @@ public class Checker {
             available.add(a);
         }
         for (int y = 0; y < 9; y++) {
-            available.remove(new Integer(field[y][x]));
+            available.remove(Integer.valueOf(field[y][x]));
         }
         return new HashSet<>(available);
     }
@@ -34,21 +34,25 @@ public class Checker {
             available.add(a);
         }
         for (int x = 0; x < 9; x++) {
-            available.remove(new Integer(field[y][x]));
+            available.remove(Integer.valueOf(field[y][x]));
         }
         return new HashSet<>(available);
     }
 
-    public boolean checkPoint(int[][] fieldParam, int x, int y, int n) {
+    public HashSet<Integer> availabilityPoint(int[][] field, int x, int y) {
         Helper helper = new Helper();
-        int[][] field = helper.fieldCopy(fieldParam);
-        field[y][x] = 0;
-        HashSet<Integer> availableSquare = availabilitySquare(field, x, y);
-        HashSet<Integer> availableColumn = availabilityColumn(field, x);
-        HashSet<Integer> availableRow = availabilityRow(field, y);
+        int[][] newField = helper.fieldCopy(field);
+        newField[y][x] = 0;
+        HashSet<Integer> availableSquare = availabilitySquare(newField, x, y);
+        HashSet<Integer> availableColumn = availabilityColumn(newField, x);
+        HashSet<Integer> availableRow = availabilityRow(newField, y);
         availableSquare.retainAll(availableRow);
         availableSquare.retainAll(availableColumn);
-        return availableSquare.contains(n);
+        return availableSquare;
+    }
+
+    public boolean checkPoint(int[][] field, int x, int y, int n) {
+        return availabilityPoint(field, x, y).contains(n);
     }
 
     public ArrayList<int[]> checkField(int[][] field) {

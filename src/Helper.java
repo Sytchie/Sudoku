@@ -8,4 +8,27 @@ public class Helper {
         }
         return newField;
     }
+
+    public void printField(int[][] field) {
+        System.out.println("-------------------------------");
+        int rowCount = 1;
+        for (int[] row : field) {
+            System.out.print('|');
+            int columnCount = 1;
+            for (int val : row) {
+                String c = "*";
+                if (val != 0) {
+                    c = Integer.toString(val);
+                }
+                System.out.print(' ' + c + ' ');
+                if (columnCount++ % 3 == 0) {
+                    System.out.print('|');
+                }
+            }
+            System.out.println();
+            if (rowCount++ % 3 == 0) {
+                System.out.println("-------------------------------");
+            }
+        }
+    }
 }

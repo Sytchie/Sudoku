@@ -45,7 +45,7 @@ public class Generator {
                             }
                         }
                         int r = available.get(random.nextInt(available.size()));
-                        available.remove(new Integer(r));
+                        available.remove(Integer.valueOf(r));
                         int x = squareX * 3 + r % 3;
                         int y = squareY * 3 + r / 3;
                         if (field[y][x] == 0 && checker.checkPoint(field, x, y, n)) {
